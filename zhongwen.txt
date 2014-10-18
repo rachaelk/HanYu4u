@@ -1,0 +1,35 @@
+梨子 lízi 0 0 85 75 2 pear
+酸橙 suān*chéng 0*215 100*0 65*85 70*70 1 lime
+香蕉 xiāngjiāo 100 150 170 110 1.75 banana
+橙子 chéng*zi 85*175 0*70 125*125 690*95 1.5 orange
+苹果 píngguǒ 48*0 40*180 95*80 105*110 2 apple
+Frame: fruits -------------------------------------
+黄瓜 huángguā 0 0 115 148 1.2cucumber
+胡萝卜 húluóbo 125 0 160 148 1.2 carrot
+芹菜 qíncài 295*295*256 98*83*178 195*130*162 87*15*55 1.2 celery
+绿色的甜椒 lǜsè*de*tiánjiāo 295 0 195 83 1.2 green pepper
+青刀豆 qīng*dāo*dòu 0 190 250 55 1.5 green beans
+芽球甘蓝 yá*qiú*gānlán 400 183 90 55 1 brussel sprouts
+朝鲜蓟/洋百合 cháoxiǎn*jì/yáng*bǎihé 0 243 170 49 2 artichoke
+羽衣甘蓝 yǔyī*gānlán 195 233 195 50 5 kale
+Frame: cucumber -------------------------------------
+茄子 qiézi 0 248 180 75 3 eggplant
+胡萝卜 húluóbo 290 168 155 75 4 carrot
+绿色的瓜 lǜsè*de*guā 200 208 190 120 1.5 yellow squash
+黄色的瓜 huángsè*de*guā 400 208 90 120 1.2 red squash
+青菜 qīngcài 0 168 285 130 0.3 baby bok choy
+圆白菜 yuánbáicài 265 0 185 153 1 cabbage
+红色的圆白菜 hóngsè*de*yuánbáicài 190 0 65 153 3 red cabbage
+白菜 báicài 0 168 285 130 2 bok choy
+Frame: eggplant -------------------------------------
+黄瓜 huángguā 230 173 260 50 1 cucmber
+红土豆 hóngtǔdòu 120 223 90 60 2 red potatoes
+小的红土豆 xiǎo*de*hóngtǔdòu 0 223 105 65 3 baby red potatoes
+生菜 shēngcài 367 223 143 65 2 lettuce
+青刀豆 qīng*dāo*dòu 90*140 0*48 255*90 43*100 3 green beans
+土豆 tǔdòu 242 223 106 60 1 potato
+欧芹 ōu*qín 50 173 170 55 4 parsley
+红色的生菜 hóngsè*de*shēngcài 230 68 160 130 5 red leaf lettuce
+绿色的生菜 lǜsè*de*shēngcài 395 48 95 150 2 green leaf lettuce
+长叶生菜 cháng*yè*shēngcài 42*46 78*48 188*84 115*35 4 romaine lettuce
+Frame: lettuce -------------------------------------
