@@ -3,13 +3,14 @@ HanYu4u
 
 Chinese Learner App Code_Xcode (in works)
 
-This code is written for an iOS app that will be a language learning tool for students of Chinese.
+This code is written for an iOS app that will be a language learning tool for students of Chinese. It is in the works, a project of a single student who really hopes to decrypt Chinese and show people it's not so scary!
 # TO DO: 
 
-    --more content
-    --better user-interface
-    --more error-handling
-    --more commenting!
+    1. more content
+    2. better user-interface
+    3. more error-handling
+    4. more commenting!
+    5. testing on hardware
 
 #Game:
 1. User learns words visually and interactively by clicking on words in Chinese sentences and seeing images. (Level code)
