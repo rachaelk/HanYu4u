@@ -6,8 +6,15 @@
 //  Copyright (c) 2014 Rachael Keller. All rights reserved.
 //
 
+//FILE:Dialog3
+//PURPOSE: NUMBERS
+//  Here the user will test his or her skills in numbers.
+//  
+
+
 #import "Dialog3.h"
 #import "Base_Scene.h"
+
 
 @implementation Dialog3
 @synthesize flashed_number = _flashed_number;
