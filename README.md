@@ -4,20 +4,21 @@ HanYu4u
 Chinese Learner App Code_Xcode (in works)
 
 This code is written for an iOS app that will be a language learning tool for students of Chinese.
-TO DO: 
+# TO DO: 
+
     --more content
     --better user-interface
     --more error-handling
     --more commenting!
 
-Game:
+#Game:
 1. User learns words visually and interactively by clicking on words in Chinese sentences and seeing images. (Level code)
 2. User earns money by answering correctly within Dialogs. (Dialog code)
 3. User goes to SmallMarket to check out items in the aisles.
    Click on some item within an image, up pops a textbox with Chinese translation.
 4. User enters the MarketPlace, where s/he can haggle with the store owner to get one or more of the items on the table.
 
-Implemented code:
+# Implemented code:
     Controllers:
         Intro_Controller -- root ViewController
         BaseStoryboard -- the BiewController for the level/dialog scenes
