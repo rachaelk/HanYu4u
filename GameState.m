@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 Rachael Keller. All rights reserved.
 //
 
+//FILE: GameState
+//PURPOSE:
+//   Records the amount of money the user has gained.
+
 #import "GameState.h"
 
 @implementation GameState

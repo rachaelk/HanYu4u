@@ -6,7 +6,13 @@
 //  Copyright (c) 2014 Rachael Keller. All rights reserved.
 //
 
-
+//FILE:BUYABLE_GOODS
+//PURPOSE:
+//   To provide the information (chinese/english) for each image on which items
+//   will apppear on the screen.
+//TO DO:
+//   Deconstruct images into associated blocks
+//   Map blocks to the items they are.
 
 #ifndef zhongwen_7_28_14
 #define zhongwen_7_28_14

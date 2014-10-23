@@ -7,7 +7,7 @@
 //
 
 #import "MyScene.h"
-
+//BASE SCENE in the program.
 
 
 @implementation MyScene

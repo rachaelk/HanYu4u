@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 Rachael Keller. All rights reserved.
 //
 
+//FILE: SMALLSTORE
+//PURPOSE:
+//    To have show the items in aisles, like a supermarket, for the user.
+
 #import <SpriteKit/SpriteKit.h>
 #import "PMCustomKeyboard.h"
 #include "buyable_goods.h"

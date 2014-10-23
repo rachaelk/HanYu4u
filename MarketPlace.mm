@@ -10,6 +10,14 @@
 #import "Base_Scene.h"
 #import "buyable_goods.h"
 
+//FUNCTION: MarketPlace
+//PURPOSE:
+//    To be the 'reward center' of the game. The user will be able to
+//    haggle with a store owner for 'trophies.'
+//    So in each level, one earns money (RMB), then they test their
+//    Chinese skills and use it here.
+
+
 #include <iostream>
 
 @implementation MarketPlace
