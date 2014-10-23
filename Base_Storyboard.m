@@ -56,9 +56,9 @@
 {
     
     SKView * skView_temp = (SKView *)self.view;
-    NSLog(@"tide is hiiiigh~~");
+    //NSLog(@"tide is hiiiigh~~");
     Level0 *scene0 = [Level0 sceneWithSize:skView_temp.bounds.size];
-     NSLog(@"tide is hiiiigh~~1");
+    // NSLog(@"tide is hiiiigh~~1");
     scene0.scaleMode = SKSceneScaleModeAspectFill;
     //scene0.root_controller = self;
     // Present the scene.
