@@ -1,21 +1,21 @@
-//
-//  MarketPlace.m
-//  HanYu4u
-//
-//  Created by Rachael Keller on 7/31/14.
-//  Copyright (c) 2014 Rachael Keller. All rights reserved.
-//
+// 
+//   MarketPlace.m
+//   HanYu4u
+// 
+//   Created by Rachael Keller on 7/31/14.
+//   Copyright (c) 2014 Rachael Keller. All rights reserved.
+// 
 
 #import "MarketPlace.h"
 #import "Base_Scene.h"
 #import "buyable_goods.h"
 
-//FUNCTION: MarketPlace
-//PURPOSE:
-//    To be the 'reward center' of the game. The user will be able to
-//    haggle with a store owner for 'trophies.'
-//    So in each level, one earns money (RMB), then they test their
-//    Chinese skills and use it here.
+// FUNCTION: MarketPlace
+// PURPOSE:
+//     To be the 'reward center' of the game. The user will be able to
+//     haggle with a store owner for 'trophies.'
+//     So in each level, one earns money (RMB), then they test their
+//     Chinese skills and use it here.
 
 
 #include <iostream>
@@ -53,17 +53,17 @@
 
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 static inline int skRand(int low, int high){
     
-    return arc4random()%(high-low) + low;//why no +1? high is already +1, of sorts.
+    return arc4random()%(high-low) + low;// why no +1? high is already +1, of sorts.
 }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -(void)dismissKeyboard{
     [input_hanyu0 resignFirstResponder];
 }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -(int)parse_amounts:(NSString *) s1_amount{
     
     int amount = 0;
@@ -72,63 +72,63 @@ static inline int skRand(int low, int high){
     NSArray *chinese_amounts = [[NSArray alloc] initWithObjects:  @"十", @"九", @"八", @"七",@"六", @"五", @"四", @"三",@"两", @"一", nil];
     
     if (s1_amount.length > 0){
-        //IF INPUT AN AMOUNT:
+        // IF INPUT AN AMOUNT:
         
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         if(s1_amount.length == 1)
         {
             NSLog(@"bought <=10");
             
             for (int i = 0; i < chinese_amounts.count; ++i){
                 if ([s1_amount isEqualToString:chinese_amounts[i]]){
-                    amount = i+1; //1 is mapped to 0, 2 to 1, etc.
+                    amount = i+1; // 1 is mapped to 0, 2 to 1, etc.
                 }
             }
             NSLog(@"%d",amount);
         }
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         else if (s1_amount.length == 2)
         {
             NSString *s1_amount_first_char = [s1_amount substringWithRange:NSMakeRange(0, 1)];
             NSString *s1_amount_second_char = [s1_amount substringWithRange:NSMakeRange(1, 1)];
-            //~~~~~~~~~~~~~~~~~
-            //Cases eleven, twelve, ..., nineteen:
+            // ~~~~~~~~~~~~~~~~~
+            // Cases eleven, twelve, ..., nineteen:
             if ([s1_amount_first_char isEqualToString: @"十"])
             {
                 NSLog(@"bought 10+some");
-                //map second character to integers
+                // map second character to integers
                 amount = 10;
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_second_char isEqualToString:chinese_amounts[i]]){
-                        amount += 10-i; //1 is mapped to 9, 2 to 8, etc.
+                        amount += 10-i; // 1 is mapped to 9, 2 to 8, etc.
                     }
                 }
                 NSLog(@"%d",amount);
                 
             }
-            //~~~~~~~~~~~~~~~~~
-            //Cases ten, twenty, thirty, ..., ninety
+            // ~~~~~~~~~~~~~~~~~
+            // Cases ten, twenty, thirty, ..., ninety
             else if ([s1_amount_second_char isEqualToString: @"十"])
             {
                 
                 NSLog(@"bought some tens");
-                //map first char to integers
+                // map first char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
             }
-            //~~~~~~~~~~~~~~~~~
-            //Cases one hundred, two hundred, ..., nine hundred
+            // ~~~~~~~~~~~~~~~~~
+            // Cases one hundred, two hundred, ..., nine hundred
             else if ([s1_amount_second_char isEqualToString: @"百"])
             {
                 NSLog(@"bought some hundred");
-                //map first char to integers
+                // map first char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 
@@ -140,55 +140,55 @@ static inline int skRand(int low, int high){
             
         }
         
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        //Cases ninety-five, thirty-two, one hundred sixty (yi bai liu), etc.
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // Cases ninety-five, thirty-two, one hundred sixty (yi bai liu), etc.
         else if (s1_amount.length == 3)
         {
             NSString *s1_amount_first_char = [s1_amount substringWithRange:NSMakeRange(0, 1)];
             NSString *s1_amount_second_char = [s1_amount substringWithRange:NSMakeRange(1, 1)];
             NSString *s1_amount_third_char = [s1_amount substringWithRange:NSMakeRange(2, 1)];
             
-            //~~~~~~~~~~~~~~~~~
-            //Cases fifty-six, thirty-five, etc.:
+            // ~~~~~~~~~~~~~~~~~
+            // Cases fifty-six, thirty-five, etc.:
             if ([s1_amount_second_char isEqualToString: @"十"])
             {
                 NSLog(@"bought some tens + some digits");
-                //map first and third character to integers
+                // map first and third character to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_amounts[i]]){
-                        amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
             }
-            //~~~~~~~~~~~~~~~~~
-            //Cases one hundred fifty, two hundred sixty, etc
+            // ~~~~~~~~~~~~~~~~~
+            // Cases one hundred fifty, two hundred sixty, etc
             else if ([s1_amount_second_char isEqualToString: @"百"])
             {
                 if([s1_amount_third_char isEqualToString: @"十"]){
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     amount += 10;
                 }
                 else{
                     NSLog(@"bought some hundred + some tens");
-                    //map first and third char to integers
+                    // map first and third char to integers
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
@@ -199,8 +199,8 @@ static inline int skRand(int low, int high){
             }
             
         }
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        //Cases e.g. 103 yi bai ling san, can do more
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // Cases e.g. 103 yi bai ling san, can do more
         else if (s1_amount.length == 4)
         {
             NSString *s1_amount_first_char  = [s1_amount substringWithRange:NSMakeRange(0, 1)];
@@ -208,35 +208,35 @@ static inline int skRand(int low, int high){
             NSString *s1_amount_third_char  = [s1_amount substringWithRange:NSMakeRange(2, 1)];
             NSString *s1_amount_fourth_char = [s1_amount substringWithRange:NSMakeRange(3, 1)];
             
-            //~~~~~~~~~~~~~~~~~
-            //Cases one hundred three, two hundred four, ...,
+            // ~~~~~~~~~~~~~~~~~
+            // Cases one hundred three, two hundred four, ...,
             if ([s1_amount_second_char isEqualToString: @"百"])
             {
                 if ([s1_amount_third_char isEqualToString: @"零"])
                 {
                     NSLog(@"bought some hundred + some tens");
-                    //map first and third char to integers
+                    // map first and third char to integers
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_amounts.count; ++i){
                         if ([s1_amount_fourth_char isEqualToString:chinese_amounts[i]]){
-                            amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
                 else if([s1_amount_third_char isEqualToString:@"十"]){
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     amount += 10;
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_fourth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
@@ -244,15 +244,15 @@ static inline int skRand(int low, int high){
                 else if ([s1_amount_fourth_char isEqualToString: @"十"])
                 {
                     NSLog(@"bought some hundred + some tens");
-                    //map first and third char to integers
+                    // map first and third char to integers
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
@@ -263,12 +263,12 @@ static inline int skRand(int low, int high){
                 {
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     
@@ -278,7 +278,7 @@ static inline int skRand(int low, int high){
                     if([s1_amount_fourth_char isEqualToString: @"十"]){
                         for (int i = 0; i < chinese_numbers.count; ++i){
                             if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                                amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                                amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                             }
                         }
                         amount += 10;
@@ -286,12 +286,12 @@ static inline int skRand(int low, int high){
                     else{
                         for (int i = 0; i < chinese_numbers.count; ++i){
                             if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                                amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                                amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                             }
                         }
                         for (int i = 0; i < chinese_numbers.count; ++i){
                             if ([s1_amount_fourth_char isEqualToString:chinese_numbers[i]]){
-                                amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                                amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                             }
                         }
                     }
@@ -303,12 +303,12 @@ static inline int skRand(int low, int high){
                 {
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     
@@ -317,7 +317,7 @@ static inline int skRand(int low, int high){
                     if([s1_amount_fourth_char isEqualToString: @"十"]){
                         for (int i = 0; i < chinese_numbers.count; ++i){
                             if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                                amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                                amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                             }
                         }
                         amount += 10;
@@ -330,8 +330,8 @@ static inline int skRand(int low, int high){
             
         }
         
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        //Cases e.g. 125, 13100, 1310
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // Cases e.g. 125, 13100, 1310
         else if (s1_amount.length == 5){
             NSString *s1_amount_first_char  = [s1_amount substringWithRange:NSMakeRange(0, 1)];
             NSString *s1_amount_second_char = [s1_amount substringWithRange:NSMakeRange(1, 1)];
@@ -339,30 +339,30 @@ static inline int skRand(int low, int high){
             NSString *s1_amount_fourth_char = [s1_amount substringWithRange:NSMakeRange(3, 1)];
             NSString *s1_amount_fifth_char  = [s1_amount substringWithRange:NSMakeRange(4, 1)];
             
-            //~~~~~~~~~~~~~~~~~
-            //Cases one hundred three, two hundred four, ...,
+            // ~~~~~~~~~~~~~~~~~
+            // Cases one hundred three, two hundred four, ...,
             if ([s1_amount_second_char isEqualToString: @"百"]){
-                //map first char -> number of hundreds
-                //map third char -> number of tens
-                //fourth -> shi
-                //map fifth char -> number of singles
+                // map first char -> number of hundreds
+                // map third char -> number of tens
+                // fourth -> shi
+                // map fifth char -> number of singles
                 
                 
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 
@@ -372,22 +372,22 @@ static inline int skRand(int low, int high){
             }
             if (([s1_amount_second_char isEqualToString: @"千"])& [s1_amount_fourth_char isEqualToString:@"百"]){
                 
-                //x1000 + y100 + z10 = 1310 and etc.
+                // x1000 + y100 + z10 = 1310 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
@@ -399,22 +399,22 @@ static inline int skRand(int low, int high){
                 
                 
                 
-                //x10000 + y1000 + z100 = 13,100 and etc.
+                // x10000 + y1000 + z100 = 13,100 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 
@@ -425,17 +425,17 @@ static inline int skRand(int low, int high){
                 
                 
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 if([s1_amount_fourth_char isEqualToString: @"十"]){
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     amount += 10;
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
@@ -443,17 +443,17 @@ static inline int skRand(int low, int high){
                     
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_fourth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
@@ -464,63 +464,63 @@ static inline int skRand(int low, int high){
                 if([s1_amount_fourth_char isEqualToString: @"十"]){
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     amount += 10;
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
                 else{
-                    //x10000 + y1000 + z100 = 13,100 and etc.
+                    // x10000 + y1000 + z100 = 13,100 and etc.
                     NSLog(@"bought some hundred + some tens");
-                    //map first and third char to integers
+                    // map first and third char to integers
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_fourth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
             }
             else if (([s1_amount_second_char isEqualToString: @"千"])& [s1_amount_fourth_char isEqualToString:@"百"]& [s1_amount_fifth_char isEqualToString:@"十"]){
                 
-                //x1000 + y100 + z10 = 1310 and etc.
+                // x1000 + y100 + z10 = 1310 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
-                amount += 10; //from the final shi
+                amount += 10; // from the final shi
                 NSLog(@"%d",amount);
             }
             else if (([s1_amount_second_char isEqualToString: @"千"])& [s1_amount_third_char isEqualToString:@"零"]){
                 
-                //x10000 + y1000 + z100 = 13,100 and etc.
+                // x10000 + y1000 + z100 = 13,100 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_fourth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
             }
@@ -528,8 +528,8 @@ static inline int skRand(int low, int high){
                 NSLog(@"buy less ba");
             }
         }
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        //Cases e.g. 125, 13100, 1310 三千四百五十, 三万四千五百
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // Cases e.g. 125, 13100, 1310 三千四百五十, 三万四千五百
         else if (s1_amount.length == 6){
             NSString *s1_amount_first_char  = [s1_amount substringWithRange:NSMakeRange(0, 1)];
             NSString *s1_amount_second_char = [s1_amount substringWithRange:NSMakeRange(1, 1)];
@@ -538,49 +538,49 @@ static inline int skRand(int low, int high){
             NSString *s1_amount_fifth_char  = [s1_amount substringWithRange:NSMakeRange(4, 1)];
             NSString *s1_amount_sixth_char  = [s1_amount substringWithRange:NSMakeRange(5, 1)];
             
-            //~~~~~~~~~~~~~~~~~
-            //Cases one hundred three, two hundred four, ...,
+            // ~~~~~~~~~~~~~~~~~
+            // Cases one hundred three, two hundred four, ...,
             if (([s1_amount_second_char isEqualToString: @"千"]) & ([s1_amount_fourth_char isEqualToString: @"百"])& ([s1_amount_sixth_char isEqualToString: @"十"])){
-                //map first char -> number of hundreds
-                //map third char -> number of tens
-                //fourth -> shi
-                //map fifth char -> number of singles
-                //map first and third char to integers
+                // map first char -> number of hundreds
+                // map third char -> number of tens
+                // fourth -> shi
+                // map fifth char -> number of singles
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
             }
             else if (([s1_amount_second_char isEqualToString: @"万"]) & ([s1_amount_fourth_char isEqualToString: @"千"])& ([s1_amount_sixth_char isEqualToString: @"百"])){
-                //map first char -> number of hundreds
-                //map third char -> number of tens
-                //fourth -> shi
-                //map fifth char -> number of singles
-                //map first and third char to integers
+                // map first char -> number of hundreds
+                // map third char -> number of tens
+                // fourth -> shi
+                // map fifth char -> number of singles
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 
@@ -591,41 +591,41 @@ static inline int skRand(int low, int high){
             }
             else if (([s1_amount_second_char isEqualToString: @"千"])& [s1_amount_fourth_char isEqualToString:@"百"]){
                 
-                //x1000 + y100 + z10 = 1310 and etc.
+                // x1000 + y100 + z10 = 1310 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 if([s1_amount_fifth_char isEqualToString:@"十"]){
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
-                    amount += 10; //just one shi
+                    amount += 10; // just one shi
                     for (int i = 0; i < chinese_amounts.count; ++i){
                         if ([s1_amount_sixth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
                 else{
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_amounts.count; ++i){
                         if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
@@ -633,25 +633,25 @@ static inline int skRand(int low, int high){
                 
             }
             
-            //1035: 一千零三十五
+            // 1035: 一千零三十五
             else if (([s1_amount_second_char isEqualToString: @"千"])& [s1_amount_third_char isEqualToString:@"零"]){
                 
-                //x1000 + y100 + z10 = 1310 and etc.
+                // x1000 + y100 + z10 = 1310 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_fourth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_sixth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
@@ -659,22 +659,22 @@ static inline int skRand(int low, int high){
             }
             else if (([s1_amount_second_char isEqualToString: @"万"])& [s1_amount_fourth_char isEqualToString:@"千"]){
                 
-                //x10000 + y1000 + z100 = 13,100 and etc.
+                // x10000 + y1000 + z100 = 13,100 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
@@ -682,22 +682,22 @@ static inline int skRand(int low, int high){
             }
             else if (([s1_amount_second_char isEqualToString: @"万"])& [s1_amount_third_char isEqualToString:@"零"]){
                 
-                //x10000 + y1000 + z100 = 13,100 and etc.
+                // x10000 + y1000 + z100 = 13,100 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_fourth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_sixth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
@@ -706,22 +706,22 @@ static inline int skRand(int low, int high){
             
             else if (([s1_amount_second_char isEqualToString: @"万"])& [s1_amount_fourth_char isEqualToString:@"千"]& [s1_amount_fifth_char isEqualToString:@"零"]){
                 
-                //x10000 + y1000 + z100 = 13,100 and etc.
+                // x10000 + y1000 + z100 = 13,100 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                        amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_sixth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
@@ -730,22 +730,22 @@ static inline int skRand(int low, int high){
             
             else if (([s1_amount_second_char isEqualToString: @"千"])& [s1_amount_third_char isEqualToString:@"零"]){
                 
-                //x10000 + y1000 + z100 = 13,100 and etc.
+                // x10000 + y1000 + z100 = 13,100 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                        amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_fourth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_sixth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
@@ -753,22 +753,22 @@ static inline int skRand(int low, int high){
             }
             else if (([s1_amount_second_char isEqualToString: @"千"])& [s1_amount_fourth_char isEqualToString:@"百"]& [s1_amount_fifth_char isEqualToString:@"零"]){
                 
-                //x10000 + y1000 + z100 = 13,100 and etc.
+                // x10000 + y1000 + z100 = 13,100 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]] || [s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                        amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_sixth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
@@ -779,8 +779,8 @@ static inline int skRand(int low, int high){
             }
             
         }
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        //Cases e.g. 三千四百五十六
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // Cases e.g. 三千四百五十六
         else if (s1_amount.length == 7){
             NSString *s1_amount_first_char  = [s1_amount substringWithRange:NSMakeRange(0, 1)];
             NSString *s1_amount_second_char = [s1_amount substringWithRange:NSMakeRange(1, 1)];
@@ -790,59 +790,59 @@ static inline int skRand(int low, int high){
             NSString *s1_amount_sixth_char = [s1_amount substringWithRange:NSMakeRange(5, 1)];
             NSString *s1_amount_seventh_char  = [s1_amount substringWithRange:NSMakeRange(6, 1)];
             
-            //~~~~~~~~~~~~~~~~~
-            //Cases one hundred three, two hundred four, ...,
+            // ~~~~~~~~~~~~~~~~~
+            // Cases one hundred three, two hundred four, ...,
             if ([s1_amount_second_char isEqualToString: @"百"]){
-                //map first char -> number of hundreds
-                //map third char -> number of tens
-                //fourth -> shi
-                //map fifth char -> number of singles
+                // map first char -> number of hundreds
+                // map third char -> number of tens
+                // fourth -> shi
+                // map fifth char -> number of singles
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_numbers[i]] || [s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                        amount = (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_fifth_char isEqualToString:chinese_amounts[i]]){
-                        amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
                 
                 
             }
-            //Cases e.g. 三千四百五十六
+            // Cases e.g. 三千四百五十六
             if (([s1_amount_second_char isEqualToString: @"千"])& [s1_amount_fourth_char isEqualToString:@"百"]){
                 
-                //x1000 + y100 + z10 = 1310 and etc.
+                // x1000 + y100 + z10 = 1310 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                        amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_amounts[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 if([s1_amount_sixth_char isEqualToString:@"十"]){
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_seventh_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
@@ -851,22 +851,22 @@ static inline int skRand(int low, int high){
             }
             if (([s1_amount_second_char isEqualToString: @"万"])& [s1_amount_fourth_char isEqualToString:@"千"] && [s1_amount_sixth_char isEqualToString:@"百"]){
                 
-                //x10000 + y1000 + z100 = 13,100 and etc.
+                // x10000 + y1000 + z100 = 13,100 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                        amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 amount += 10;
@@ -879,38 +879,38 @@ static inline int skRand(int low, int high){
                 if([s1_amount_sixth_char isEqualToString: @"十"]){
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                            amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     amount += 10;
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_seventh_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
                 else{
-                    //x10000 + y1000 + z100 = 13,100 and etc.
+                    // x10000 + y1000 + z100 = 13,100 and etc.
                     NSLog(@"bought some hundred + some tens");
-                    //map first and third char to integers
+                    // map first and third char to integers
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                            amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                            amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_third_char isEqualToString:chinese_amounts[i]]){
-                            amount += (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_sixth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
@@ -921,7 +921,7 @@ static inline int skRand(int low, int high){
             }
             
         }
-        //Cases e.g. 三千四百五十六
+        // Cases e.g. 三千四百五十六
         else if (s1_amount.length == 8){
             NSString *s1_amount_first_char  = [s1_amount substringWithRange:NSMakeRange(0, 1)];
             NSString *s1_amount_second_char = [s1_amount substringWithRange:NSMakeRange(1, 1)];
@@ -932,49 +932,49 @@ static inline int skRand(int low, int high){
             NSString *s1_amount_seventh_char  = [s1_amount substringWithRange:NSMakeRange(6, 1)];
             NSString *s1_amount_eighth_char  = [s1_amount substringWithRange:NSMakeRange(7, 1)];
             
-            //~~~~~~~~~~~~~~~~~
-            //Cases one hundred three, two hundred four, ...,
+            // ~~~~~~~~~~~~~~~~~
+            // Cases one hundred three, two hundred four, ...,
             if ([s1_amount_second_char isEqualToString: @"万"] && [s1_amount_fourth_char isEqualToString:@"千"]){
                 
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_amounts[i]] || [s1_amount_first_char isEqualToString:chinese_numbers[i]]){
-                        amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_amounts[i]]||[s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 if([s1_amount_fifth_char isEqualToString:@"零"] && [s1_amount_seventh_char isEqualToString:@"十"]){
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_sixth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_eighth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                 }
                 else if([s1_amount_sixth_char isEqualToString:@"百"]){
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     if([s1_amount_eighth_char isEqualToString:@"十"]){
                         for (int i = 0; i < chinese_numbers.count; ++i){
                             if ([s1_amount_seventh_char isEqualToString:chinese_numbers[i]]){
-                                amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                                amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                             }
                         }
                     }
                     else if([s1_amount_seventh_char isEqualToString:@"零"]){
                         for (int i = 0; i < chinese_numbers.count; ++i){
                             if ([s1_amount_eighth_char isEqualToString:chinese_numbers[i]]){
-                                amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                                amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                             }
                         }
                     }
@@ -984,22 +984,22 @@ static inline int skRand(int low, int high){
             }
             if (([s1_amount_second_char isEqualToString: @"千"])& [s1_amount_fourth_char isEqualToString:@"百"]){
                 
-                //x1000 + y100 + z10 = 1310 and etc.
+                // x1000 + y100 + z10 = 1310 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                        amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
@@ -1007,28 +1007,28 @@ static inline int skRand(int low, int high){
             }
             if (([s1_amount_second_char isEqualToString: @"万"])& [s1_amount_third_char isEqualToString:@"零"]&&[s1_amount_fifth_char isEqualToString:@"百"]&&[s1_amount_seventh_char isEqualToString:@"十"]){
                 
-                //x1000 + y100 + z10 = 1310 and etc.
+                // x1000 + y100 + z10 = 1310 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                        amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_fourth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_sixth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_eighth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
@@ -1036,28 +1036,28 @@ static inline int skRand(int low, int high){
             }
             if (([s1_amount_second_char isEqualToString: @"千"])& [s1_amount_third_char isEqualToString:@"零"]&&[s1_amount_fifth_char isEqualToString:@"百"]&&[s1_amount_seventh_char isEqualToString:@"十"]){
                 
-                //x1000 + y100 + z10 = 1310 and etc.
+                // x1000 + y100 + z10 = 1310 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                        amount = (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_fourth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_sixth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_eighth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
@@ -1067,27 +1067,27 @@ static inline int skRand(int low, int high){
             
             if (([s1_amount_second_char isEqualToString: @"万"])& [s1_amount_fourth_char isEqualToString:@"千"] &&[s1_amount_sixth_char isEqualToString:@"百"] && [s1_amount_eighth_char isEqualToString:@"十"] ){
                 
-                //x10000 + y1000 + z100 = 13,100 and etc.
+                // x10000 + y1000 + z100 = 13,100 and etc.
                 NSLog(@"bought some hundred + some tens");
-                //map first and third char to integers
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                        amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_seventh_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
@@ -1096,26 +1096,26 @@ static inline int skRand(int low, int high){
             
             if (([s1_amount_second_char isEqualToString: @"万"])& [s1_amount_fourth_char isEqualToString:@"千"] &&[s1_amount_sixth_char isEqualToString:@"百"] && [s1_amount_seventh_char isEqualToString:@"零"] ){
                 
-                //
-                //map first and third char to integers
+                // 
+                // map first and third char to integers
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                        amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_amounts[i]]){
-                        amount += (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_amounts.count; ++i){
                     if ([s1_amount_eighth_char isEqualToString:chinese_numbers[i]]){
-                        amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 NSLog(@"%d",amount);
@@ -1138,36 +1138,36 @@ static inline int skRand(int low, int high){
             NSString *s1_amount_eighth_char  = [s1_amount substringWithRange:NSMakeRange(7, 1)];
             NSString *s1_amount_ninth_char  = [s1_amount substringWithRange:NSMakeRange(8, 1)];
             
-            //~~~~~~~~~~~~~~~~~
-            //Cases one hundred three, two hundred four, ...,
+            // ~~~~~~~~~~~~~~~~~
+            // Cases one hundred three, two hundred four, ...,
             if ([s1_amount_second_char isEqualToString: @"万"] && [s1_amount_fourth_char isEqualToString:@"千"]){
                 
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_first_char isEqualToString:chinese_amounts[i]]){
-                        amount = (10-i)*10000; //1 is mapped to 0, 2 to 1, etc.
+                        amount = (10-i)*10000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 for (int i = 0; i < chinese_numbers.count; ++i){
                     if ([s1_amount_third_char isEqualToString:chinese_amounts[i]]){
-                        amount += (10-i)*1000; //1 is mapped to 0, 2 to 1, etc.
+                        amount += (10-i)*1000; // 1 is mapped to 0, 2 to 1, etc.
                     }
                 }
                 
                 if([s1_amount_sixth_char isEqualToString:@"百"]){
                     for (int i = 0; i < chinese_numbers.count; ++i){
                         if ([s1_amount_fifth_char isEqualToString:chinese_numbers[i]]){
-                            amount += (10-i)*100; //1 is mapped to 0, 2 to 1, etc.
+                            amount += (10-i)*100; // 1 is mapped to 0, 2 to 1, etc.
                         }
                     }
                     if([s1_amount_eighth_char isEqualToString:@"十"]){
                         for (int i = 0; i < chinese_numbers.count; ++i){
                             if ([s1_amount_seventh_char isEqualToString:chinese_numbers[i]]){
-                                amount += (10-i)*10; //1 is mapped to 0, 2 to 1, etc.
+                                amount += (10-i)*10; // 1 is mapped to 0, 2 to 1, etc.
                             }
                         }
                         for (int i = 0; i < chinese_numbers.count; ++i){
                             if ([s1_amount_ninth_char isEqualToString:chinese_numbers[i]]){
-                                amount += (10-i); //1 is mapped to 0, 2 to 1, etc.
+                                amount += (10-i); // 1 is mapped to 0, 2 to 1, etc.
                             }
                         }
                     }
@@ -1176,16 +1176,16 @@ static inline int skRand(int low, int high){
         }
         else{
             NSLog(@"ok buy less");
-            //^do above in text box
+            // ^do above in text box
         }
         
-    }//if block end for length of amount > 0
+    }// if block end for length of amount > 0
     
-    //if amount string is zero, user meant 1!
+    // if amount string is zero, user meant 1!
     
     else{
         NSLog(@"default at 1!");
-        //^do above in text box
+        // ^do above in text box
         amount = 1;
     }
     NSLog(@"parser parsed amount:");
@@ -1194,7 +1194,7 @@ static inline int skRand(int low, int high){
 }
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -(void)unhide_dialogue_choices{
 
     for (SKLabelNode *label in _dialogue_master.children){
@@ -1204,35 +1204,35 @@ static inline int skRand(int low, int high){
     
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -(void)handle_shopping:(NSString *) purchase_request{
     NSLog(@"girls just wanna have fun~~");
     
-    NSRange r= [purchase_request rangeOfString:@"个"]; //loc of measure word
-    //r.location
+    NSRange r= [purchase_request rangeOfString:@"个"]; // loc of measure word
+    // r.location
     if (r.location != NSNotFound){
-        NSString *s1 = [purchase_request substringWithRange:NSMakeRange(0, r.location)]; //second argument of NSMakeRange is length
+        NSString *s1 = [purchase_request substringWithRange:NSMakeRange(0, r.location)]; // second argument of NSMakeRange is length
         NSString *s2 = [purchase_request substringWithRange:NSMakeRange(r.location+1, (purchase_request.length-1)-r.location)];
         NSLog(s1);
-        //no using unichar, can't handle the encoding for symbols
+        // no using unichar, can't handle the encoding for symbols
         NSString *s1_begin = [s1 substringWithRange:NSMakeRange(0, 1)];
         
-        int amount = 0; //amount!!
-        //First extract the number
+        int amount = 0; // amount!!
+        // First extract the number
         if([s1_begin isEqualToString:@"我"]){
             
             NSString *s1_second_char = [s1 substringWithRange:NSMakeRange(1, 1)];
             NSString *s1_third_char = [s1 substringWithRange:NSMakeRange(2, 1)];
             
             
-            if( //handle two-character combos before the number:
+            if( // handle two-character combos before the number:
                ( ([s1_second_char isEqualToString: @"想"]) && ([s1_third_char isEqualToString: @"要"]))
                || (([s1_second_char isEqualToString: @"想"]) && ([s1_third_char isEqualToString: @"买"]))
                || (([s1_second_char  isEqualToString: @"要"]) && ([s1_third_char isEqualToString: @"买"]))
                )
             {
-                NSString *s1_amount = [s1 substringWithRange:NSMakeRange(3, (s1.length)-3)];//length - 3 prev chars
+                NSString *s1_amount = [s1 substringWithRange:NSMakeRange(3, (s1.length)-3)];// length - 3 prev chars
                 amount = [self parse_amounts:s1_amount];
                 NSLog(@"out of the woooooooods~");
                 NSLog(@"%d",amount);
@@ -1249,11 +1249,11 @@ static inline int skRand(int low, int high){
         _store_chat_longer_sentence.hidden = false;
     }
 }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -(void)seller_responses:(NSString*)store_owner_response{
     
     for (UIView *subview in [self.view subviews]) {
-        // Only remove the subviews with tag not equal to 1
+        //  Only remove the subviews with tag not equal to 1
         if (subview.tag == 9) {
             [subview removeFromSuperview];
         }
@@ -1266,9 +1266,9 @@ static inline int skRand(int low, int high){
     explanationField.backgroundColor=[UIColor whiteColor];
     explanationField.alpha = 0.8;
     explanationField.numberOfLines = 2;
-    //string of explanation~~~~~~~~~~~
+    // string of explanation~~~~~~~~~~~
     NSString *explanation=store_owner_response;
-    //~~~~~~~~~~~~~~~~~~~end explanation
+    // ~~~~~~~~~~~~~~~~~~~end explanation
     explanationField.text = explanation;
     explanationField.adjustsFontSizeToFitWidth = true;
     explanationField.textAlignment = NSTextAlignmentCenter;
@@ -1283,8 +1283,8 @@ static inline int skRand(int low, int high){
     [explanationField sizeToFit];
     
     CGRect frame = explanationField.frame;
-    frame.origin.y= yPosition;//pass the cordinate which you want
-    frame.origin.x= xPosition;//pass the cordinate which you want
+    frame.origin.y= yPosition;// pass the cordinate which you want
+    frame.origin.x= xPosition;// pass the cordinate which you want
     explanationField.frame= frame;
     
     
@@ -1296,23 +1296,23 @@ static inline int skRand(int low, int high){
 }
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -(void)handle_haggle:(float)requested_price actual_price:(float)actual_price probability_change:(float)prob_change magnitude_change:(float)magn_change{
     if(_price_userRequest < 0.2* actual_price){
-        //if someone tries to haggle this hard, seller knows the guy is looking for impossible deals
+        // if someone tries to haggle this hard, seller knows the guy is looking for impossible deals
         prob_change = 0.8;
         _probability_success_haggle = prob_change * _probability_success_haggle;
         [self seller_responses:@"不好啊，我为做好这个付的钱比你刚才说的更多啊！肯定不能啊。"];
     }
     else if(_price_userRequest > 0.8* actual_price){
-        //definitely sold
+        // definitely sold
     }
     int upper_bound = 1000;
     int k = skRand(0, upper_bound);
     if(k <= prob_change * upper_bound){
         
-        _probability_success_haggle = 1.2* _probability_success_haggle; //it's going well, one success
+        _probability_success_haggle = 1.2* _probability_success_haggle; // it's going well, one success
         int mid_price = 0.5*(_price_userRequest + actual_price);
         NSLog(@"%d",mid_price);
         actual_price = mid_price + magn_change*abs(actual_price - mid_price);
@@ -1333,12 +1333,12 @@ static inline int skRand(int low, int high){
 
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -(void)show_dialogue:(NSString*)store_owner_question item_cost_text:(NSString*)item_cost_text price:(float)price touch_loc:(CGPoint)touchLocationInView{
     
     for (UIView *subview in [self.view subviews]) {
-        // Only remove the subviews with tag not equal to 1
+        //  Only remove the subviews with tag not equal to 1
         if (subview.tag == 9) {
             [subview removeFromSuperview];
         }
@@ -1351,13 +1351,13 @@ static inline int skRand(int low, int high){
     explanationField.backgroundColor=[UIColor whiteColor];
     explanationField.alpha = 0.8;
     explanationField.numberOfLines = 4;
-    //string of explanation~~~~~~~~~~~
+    // string of explanation~~~~~~~~~~~
     NSString *str1=store_owner_question;
     NSString *str2= item_cost_text;
     NSString *str3 = [NSString stringWithFormat:@"%.1f", price];
     NSString *str4 = @"快";
     NSString *explanation=[NSString stringWithFormat:@"%@\n%@\n%@%@\n",str1,str2, str3, str4];
-    //~~~~~~~~~~~~~~~~~~~end explanation
+    // ~~~~~~~~~~~~~~~~~~~end explanation
     explanationField.text = explanation;
     explanationField.adjustsFontSizeToFitWidth = true;
     explanationField.textAlignment = NSTextAlignmentCenter;
@@ -1372,8 +1372,8 @@ static inline int skRand(int low, int high){
     [explanationField sizeToFit];
     
     CGRect frame = explanationField.frame;
-    frame.origin.y= yPosition;//pass the cordinate which you want
-    frame.origin.x= xPosition;//pass the cordinate which you want
+    frame.origin.y= yPosition;// pass the cordinate which you want
+    frame.origin.x= xPosition;// pass the cordinate which you want
     explanationField.frame= frame;
     
     
@@ -1385,7 +1385,7 @@ static inline int skRand(int low, int high){
 }
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
@@ -1397,14 +1397,14 @@ static inline int skRand(int low, int high){
     }
     return self;
 }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -(void)didMoveToView:(SKView *)view {
     
     _probability_success_haggle = 0.01;
     _trophy_prices = [[NSMutableArray alloc] initWithObjects: @"30000", @"36000", @"900", @"9000", @"9000", nil];
     _choice_made = @"";
-    //SET Keyboard for the lesson:
+    // SET Keyboard for the lesson:
     
     NSMutableArray *k =[[NSMutableArray alloc] initWithObjects: @" ", @" ", @" ",@"万", @"千", @"百", @"零", @"个", @" ",  @" ",  @" ", @"一", @"二", @"两", @"三", @"四", @"五", @"六", @"七", @"八", @"九", @"十", @" ", @" ", @" ", @" ", @" ", @" ", @" ", @" ", nil];
     
@@ -1419,8 +1419,8 @@ static inline int skRand(int low, int high){
     
     _customKeyboard = [[PMCustomKeyboard alloc] init];
     
-    // Score
-    //~~~~~~~~~~~~~~~~~~~~~
+    //  Score
+    // ~~~~~~~~~~~~~~~~~~~~~
     _lblScore = [SKLabelNode labelNodeWithFontNamed:@"ChalkboardSE-Bold"];
     _lblScore.fontSize = 12;
     _lblScore.fontColor = [SKColor redColor];
@@ -1429,7 +1429,7 @@ static inline int skRand(int low, int high){
     [_lblScore setText:[NSString stringWithFormat:@"%d", [GameState sharedInstance].score]];
     [self addChild:_lblScore];
     
-    //to be put next to score
+    // to be put next to score
     SKLabelNode *currency = [SKLabelNode labelNodeWithFontNamed:@"ChalkboardSE-Bold"];
     currency.fontSize = 12;
     currency.fontColor = [SKColor redColor];
@@ -1441,7 +1441,7 @@ static inline int skRand(int low, int high){
     double pad = 5;
     double padding = 0.2;
     
-    //scene controller~~~~~~~~~~~~
+    // scene controller~~~~~~~~~~~~
     _go_back = [SKLabelNode labelNodeWithFontNamed:@"EuphemiaUCAS-Bold"];
     _go_back.name = @"go_back";
     _go_back.fontSize = 12;
@@ -1457,7 +1457,7 @@ static inline int skRand(int low, int high){
     
     [self addChild:button_dialog];
     [self addChild: _go_back];
-    //~~~~~~~~~~~~~~~~scene controller
+    // ~~~~~~~~~~~~~~~~scene controller
     
     
     
@@ -1489,12 +1489,12 @@ static inline int skRand(int low, int high){
     
     [_customKeyboard setTextView:input_hanyu0];
     
-    //the following block makes it such that tapping outside the textfield dismisses the keyboard~~~
+    // the following block makes it such that tapping outside the textfield dismisses the keyboard~~~
     [self.view addSubview:input_hanyu0];
     
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     _tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-    _tap.numberOfTapsRequired = 2; //if this is not specified, computer gets confused-- can't tell what is purposeful click
+    _tap.numberOfTapsRequired = 2; // if this is not specified, computer gets confused-- can't tell what is purposeful click
     [self.view addGestureRecognizer:_tap];
     
     
@@ -1550,7 +1550,7 @@ static inline int skRand(int low, int high){
     
     
     _stick_figure = [SKSpriteNode spriteNodeWithImageNamed:@"stick_figure"];
-    //[sn setScale:SKSceneScaleModeAspectFill * 0.2];
+    // [sn setScale:SKSceneScaleModeAspectFill * 0.2];
     [_stick_figure setScale: 0.45];
     _stick_figure.zPosition = 1;
     _stick_figure.position = CGPointMake(CGRectGetMinX(self.frame)+30, CGRectGetMidY(self.frame)-pad*shifted_y );
@@ -1650,7 +1650,7 @@ static inline int skRand(int low, int high){
     
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     /* Called when a touch begins */
     for (UITouch *touch in touches) {
@@ -1694,12 +1694,12 @@ static inline int skRand(int low, int high){
                 
                 
             }
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~INITIALIZE HAGGLE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~INITIALIZE HAGGLE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            //~~~~~~~~~~~~~~~~~~~~~~~TROPHIES BEGIN
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~TROPHIES BEGIN
             if([node.name isEqualToString: @"trophy_Horse"]){
                 _trophy_considered = 0;
             [self show_dialogue:@"你喜欢那个吗？" item_cost_text:@"那个三万呢。" price:[_trophy_prices[_trophy_considered] intValue] touch_loc:touchLocationInView];
@@ -1734,23 +1734,23 @@ static inline int skRand(int low, int high){
                 [self unhide_dialogue_choices];
                 
             }
-            //~~~~~~~~~~~~~~~~~~~~~~~TROPHIES END
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            //from trophy touch:
-            //call function that unhides the haggle label nodes
-            //in unhide_node_function>>call probability_of_success_haggle from if node.name == blah blah
-            //request price from user, if requested_price < 0.25*price -> prob_success goes down (probsucc-30%)
-            //               seller responds with midpoint x, subtract off midpoint price and midpoint
-            //allow further label_hitting, also wait function ('consider...'-->prob ^+20%)
-            //meiyou_qian prob+20%
-            //keyi pianyi yidianer +10%
-            //qiong_xuesheng +30%
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            //~~~~~~~~~~~~~~~~~~~~~~~DIALOGUE OPTIONS BEGIN
+            // ~~~~~~~~~~~~~~~~~~~~~~~TROPHIES END
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // from trophy touch:
+            // call function that unhides the haggle label nodes
+            // in unhide_node_function>>call probability_of_success_haggle from if node.name == blah blah
+            // request price from user, if requested_price < 0.25*price -> prob_success goes down (probsucc-30%)
+            //                seller responds with midpoint x, subtract off midpoint price and midpoint
+            // allow further label_hitting, also wait function ('consider...'-->prob ^+20%)
+            // meiyou_qian prob+20%
+            // keyi pianyi yidianer +10%
+            // qiong_xuesheng +30%
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~DIALOGUE OPTIONS BEGIN
             if([node.name isEqualToString: @"poor_student"]){
                 _iterations_poor_student += 1;
                 if (_iterations_no_money < 3){
-                    [self handle_haggle:[_user_input0 floatValue] actual_price:[_trophy_prices[_trophy_considered] intValue] probability_change:(0.9*(1-0.1*_iterations_poor_student)) magnitude_change:0.1]; //want magnitude of effect-- really is complement
+                    [self handle_haggle:[_user_input0 floatValue] actual_price:[_trophy_prices[_trophy_considered] intValue] probability_change:(0.9*(1-0.1*_iterations_poor_student)) magnitude_change:0.1]; // want magnitude of effect-- really is complement
                 }
                 else{
                     [self seller_responses:@"价格特别低，我不骗着你。"];
@@ -1772,7 +1772,7 @@ static inline int skRand(int low, int high){
                 [self handle_haggle:[_user_input0 floatValue] actual_price:[_trophy_prices[_trophy_considered] intValue] probability_change:0.3 magnitude_change:0.7];
             }
             if([node.name isEqualToString: @"cheaper"]){
-                //really handle in textFieldShouldReturn function block
+                // really handle in textFieldShouldReturn function block
                 input_hanyu0.hidden = false;
                 _choice_made = @"cheaper";
                     
@@ -1784,7 +1784,7 @@ static inline int skRand(int low, int high){
             
             
             
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             
                 
                 
@@ -1793,12 +1793,12 @@ static inline int skRand(int low, int high){
             
             
             
-        }//for all nodes
-    }//for all touches
-}//end of function call
-//-(void)handle_shopping:(NSString *) purchase_request
+        }// for all nodes
+    }// for all touches
+}// end of function call
+// -(void)handle_shopping:(NSString *) purchase_request
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     _user_input0 = textField.text;
@@ -1830,7 +1830,7 @@ static inline int skRand(int low, int high){
 
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -(BOOL)textFieldShouldClear:(UITextField *)textField
 {
@@ -1841,7 +1841,7 @@ static inline int skRand(int low, int high){
     
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -(BOOL)textFieldDidEndEditing:(UITextField *)textField
 {
     _user_input0 = textField.text;
@@ -1849,7 +1849,7 @@ static inline int skRand(int low, int high){
     return YES;
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -(BOOL)textFieldDidChange:(UITextField *)textField
 {
 
@@ -1857,6 +1857,6 @@ static inline int skRand(int low, int high){
     
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 @end

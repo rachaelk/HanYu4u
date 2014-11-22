@@ -24,13 +24,10 @@
 @synthesize tap = _tap;
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 static inline int skRand(int low, int high){
     
-    return arc4random()%(high-low) + low;//why no +1? high is already +1, of sorts.
-                                   //high = length(array of nodes), and array is indexed [0,high-1].
-                                   //so the count is (high-1)-low+1, or high-low.
+    return arc4random()%(high-low) + low;
 }
 
 
@@ -41,22 +38,23 @@ static inline int skRand(int low, int high){
     ref = skRand(0, len);
     SKSpriteNode *sprite = words[ref];
     if ([sprite.name isEqualToString:_flashed_word0]){
-        ref = (ref + 1)%len;//go to next in 'stack' >>don't want to repeat
+        ref = (ref + 1)%len;
     }
     sprite = words[ref];
     sprite.hidden = false;
-    [self.userData setValue:sprite.name forKey:@"image_index"]; //save flashed image's name
     
-    //END INPUT INDICATOR:
+    // Save flashed image's name for future use.
+    [self.userData setValue:sprite.name forKey:@"image_index"];
+    
+    // End of input.
     if(![user_input0 isEqualToString: @"end"]){
-        //[self shuffleHanyu:ref len:len array:words];
+        
         
     }
     return sprite;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -168,17 +166,17 @@ static inline int skRand(int low, int high){
         }
     }
     
-    //IF don't do this, new _flashed_word0 will go through the other if statements
+    
     if([GameState sharedInstance].score > current_score){
-        //User was correct and received new flashcard. Update with the newly flashed word.
+        
+        // User was correct and received new flashcard. Update with the newly flashed word.
         _flashed_word0 = _image_out0.name;
     }
     
    
 }
 
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -(void)check_if_out{
     
@@ -193,9 +191,12 @@ static inline int skRand(int low, int high){
     else{
         _flashed_word0  = [self.userData valueForKey:@"image_index"];
         for(SKSpriteNode * child in self.images.children){
+            
             if (child.name == _flashed_word0){
                 child.hidden = false;
-                _image_out0 = child; //set _image_out0 so that can hide it again later when user answers correctly
+                
+                // Set _image_out0 so that can hide it again later when user answers correctly
+                _image_out0 = child;
             }
         }
     }
@@ -210,7 +211,7 @@ static inline int skRand(int low, int high){
 
 -(id)initWithSize:( CGSize)size {
     if (self = [super initWithSize:size]) {
-        /* Setup */
+        
         
         self.backgroundColor = [SKColor colorWithRed:0 green:0 blue:0 alpha:1.0];
    
@@ -218,8 +219,8 @@ static inline int skRand(int low, int high){
         
         
         images = [SKNode node];
+        
         // Score
-        //~~~~~~~~~~~~~~~~~~~~~
         _score0 = [SKLabelNode labelNodeWithFontNamed:@"ChalkboardSE-Bold"];
         _score0.fontSize = 12;
         _score0.fontColor = [SKColor redColor];
@@ -227,7 +228,7 @@ static inline int skRand(int low, int high){
         [_score0 setText:[NSString stringWithFormat:@"%d", [GameState sharedInstance].score]];
         [self addChild:_score0];
         
-        //to be put next to score
+        
         SKLabelNode *currency = [SKLabelNode labelNodeWithFontNamed:@"ChalkboardSE-Bold"];
         currency.fontSize = 14;
         currency.fontColor = [SKColor redColor];
@@ -244,7 +245,7 @@ static inline int skRand(int low, int high){
         intro.position = CGPointMake(CGRectGetMidX(self.frame), _score0.position.y);
         [self addChild:intro];
         
-        //dialog controller~~~~~~~~~~~~
+      
         _go_back = [SKLabelNode labelNodeWithFontNamed:@"EuphemiaUCAS-Bold"];
         _go_back.name = @"go_back";
         _go_back.text = @"Go Back";
@@ -384,8 +385,8 @@ static inline int skRand(int low, int high){
 
 //works:
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    /* Called when a touch begins */
     
+    /* Called when a touch begins */
     for (UITouch *touch in touches) {
         
         NSArray *nodes= [self nodesAtPoint:[touch locationInNode:self]];
@@ -397,7 +398,7 @@ static inline int skRand(int low, int high){
             if( [node.name isEqualToString:@"go_back"]){
                    
                 for (UIView *subview in [self.view subviews]) {
-                    // Only remove the subviews with tag not equal to 1
+                    
                     if (subview.tag == 7 || subview.tag == 9) {
                         [subview removeFromSuperview];
                    }
@@ -439,7 +440,8 @@ static inline int skRand(int low, int high){
                 NSString *start= @"他在~";
                 
                 int n = sizeof(_flashed_word0);
-                int k = 6 % (n);//ensures in range of string
+                int k = 6 % (n);
+                
                 NSString *add =  [_flashed_word0 substringWithRange:NSMakeRange(k,1)];
                 NSString *helper=[NSString stringWithFormat:@"%@%@",start, add];
                 explanationField.text = helper;
@@ -459,8 +461,8 @@ static inline int skRand(int low, int high){
                 [explanationField sizeToFit];
                 
                 CGRect frame = explanationField.frame;
-                frame.origin.y= yPosition;//pass the cordinate which you want
-                frame.origin.x= xPosition;//pass the cordinate which you want
+                frame.origin.y= yPosition;
+                frame.origin.x= xPosition;
                 explanationField.frame = frame;
                 
                 

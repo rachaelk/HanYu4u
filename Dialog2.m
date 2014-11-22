@@ -1,10 +1,10 @@
-//
-//  Dialog2.m
-//  HanYu4u
-//
-//  Created by Rachael Keller on 8/7/14.
-//  Copyright (c) 2014 Rachael Keller. All rights reserved.
-//
+// 
+//   Dialog2.m
+//   HanYu4u
+// 
+//   Created by Rachael Keller on 8/7/14.
+//   Copyright (c) 2014 Rachael Keller. All rights reserved.
+// 
 
 #import "Dialog2.h"
 #import "Level2.h"
@@ -24,40 +24,38 @@
 @synthesize tap = _tap;
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 static inline int skRand(int low, int high){
     
-    return arc4random()%(high-low) + low;//why no +1? high is already +1, of sorts.
-    //high = length(array of nodes), and array is indexed [0,high-1].
-    //so the count is (high-1)-low+1, or high-low.
+    return arc4random()%(high-low) + low;
 }
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -(SKSpriteNode*) shuffleHanyu:(int)ref len:(int)len array:(NSArray*) words{
     
     ref = skRand(0, len);
     SKSpriteNode *sprite = words[ref];
     if ([sprite.name isEqualToString:_flashed_word]){
-        ref = (ref + 1)%len;//go to next in 'stack' >>don't want to repeat
+        ref = (ref + 1)%len;// go to next in 'stack' >>don't want to repeat
     }
     sprite = words[ref];
     sprite.hidden = false;
-    [self.userData setValue:sprite.name forKey:@"image_index"]; //save flashed image's name
+    [self.userData setValue:sprite.name forKey:@"image_index"]; // save flashed image's name
     
-    //END INPUT INDICATOR:
+    // END INPUT INDICATOR:
     if(![user_input isEqualToString: @"end"]){
-        //[self shuffleHanyu:ref len:len array:words];
+        // [self shuffleHanyu:ref len:len array:words];
         
     }
     return sprite;
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 -(void) check_word:(NSString*)input word:(NSString *) word {
@@ -168,9 +166,9 @@ static inline int skRand(int low, int high){
         }
     }
     
-    //IF don't do this, new _flashed_word will go through the other if statements
+    // IF don't do this, new _flashed_word will go through the other if statements
     if([GameState sharedInstance].score > current_score){
-        //User was correct and received new flashcard. Update with the newly flashed word.
+        // User was correct and received new flashcard. Update with the newly flashed word.
         _flashed_word = _image_out.name;
     }
     
@@ -178,13 +176,13 @@ static inline int skRand(int low, int high){
 }
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -(void)check_if_out{
     
     int num_im = [self.images.children count];
     if(!(self.view.scene.userData)){
-        _image_out.name = @"null";//<<<give starter name
+        _image_out.name = @"null";// <<<give starter name
         _image_out = [self shuffleHanyu:0 len:num_im array:self.images.children];
         _flashed_word = _image_out.name;
         self.userData = [NSMutableDictionary dictionary];
@@ -195,7 +193,7 @@ static inline int skRand(int low, int high){
         for(SKSpriteNode * child in self.images.children){
             if (child.name == _flashed_word){
                 child.hidden = false;
-                _image_out = child; //set _image_out so that can hide it again later when user answers correctly
+                _image_out = child; // set _image_out so that can hide it again later when user answers correctly
             }
         }
     }
@@ -218,8 +216,8 @@ static inline int skRand(int low, int high){
         
         
         images = [SKNode node];
-        // Score
-        //~~~~~~~~~~~~~~~~~~~~~
+        //  Score
+        // ~~~~~~~~~~~~~~~~~~~~~
         _score = [SKLabelNode labelNodeWithFontNamed:@"ChalkboardSE-Bold"];
         _score.fontSize = 12;
         _score.fontColor = [SKColor redColor];
@@ -235,7 +233,7 @@ static inline int skRand(int low, int high){
         intro.position = CGPointMake(CGRectGetMidX(self.frame), _score.position.y);
         [self addChild:intro];
         
-        //dialog controller~~~~~~~~~~~~
+        // dialog controller~~~~~~~~~~~~
         _go_back = [SKLabelNode labelNodeWithFontNamed:@"EuphemiaUCAS-Bold"];
         _go_back.name = @"go_back";
         _go_back.text = @"Go Back";
@@ -250,7 +248,7 @@ static inline int skRand(int low, int high){
         
         [self addChild:button_page];
         [self addChild: _go_back];
-        //~~~~~~~~~~~~~~~~dialog controller
+        // ~~~~~~~~~~~~~~~~dialog controller
         
         
         SKLabelNode *help = [SKLabelNode labelNodeWithFontNamed:@"EuphemiaUCAS-Bold"];
@@ -320,13 +318,13 @@ static inline int skRand(int low, int high){
 }
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 -(void)didMoveToView:(SKView *)view {
     
     
-    //SET Keyboard for the lesson:
+    // SET Keyboard for the lesson:
     
     NSMutableArray *k =[[NSMutableArray alloc] initWithObjects: @" ", @" ", @" ",@"咖", @"视", @"乐", @"吃", @"看", @" ",  @" ",  @" ", @" ", @" ", @"书", @"早", @"音", @"电", @"听", @"他", @"我", @" ", @" ", @" ", @"啡", @"饭", @"你", @"在", @"喝", @"。", @" ", nil];
     
@@ -356,13 +354,13 @@ static inline int skRand(int low, int high){
     
     [_customKeyboard setTextView:input_hanyu];
     
-    //the following block makes it such that tapping outside the textfield dismisses the keyboard~~~
+    // the following block makes it such that tapping outside the textfield dismisses the keyboard~~~
     [self.view addSubview:input_hanyu];
     
     
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     _tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-    _tap.numberOfTapsRequired = 2; //if this is not specified, computer gets confused-- can't tell what is purposeful click
+    _tap.numberOfTapsRequired = 2; // if this is not specified, computer gets confused-- can't tell what is purposeful click
     [self.view addGestureRecognizer:_tap];
     
     
@@ -370,10 +368,10 @@ static inline int skRand(int low, int high){
 }
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-//works:
+// works:
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     /* Called when a touch begins */
     
@@ -388,7 +386,7 @@ static inline int skRand(int low, int high){
             if( [node.name isEqualToString:@"go_back"]){
                 
                 for (UIView *subview in [self.view subviews]) {
-                    // Only remove the subviews with tag not equal to 1
+                    //  Only remove the subviews with tag not equal to 1
                     if (subview.tag == 7 || subview.tag == 9) {
                         [subview removeFromSuperview];
                     }
@@ -415,7 +413,7 @@ static inline int skRand(int low, int high){
             if( [node.name isEqualToString:@"help"]){
                 
                 for (UIView *subview in [self.view subviews]) {
-                    // Only remove the subviews with tag not equal to 1
+                    //  Only remove the subviews with tag not equal to 1
                     if (subview.tag == 7) {
                         [subview removeFromSuperview];
                     }
@@ -430,7 +428,7 @@ static inline int skRand(int low, int high){
                 NSString *start= @"他在~";
                 
                 int n = sizeof(_flashed_word);
-                int k = 6 % (n);//ensures in range of string
+                int k = 6 % (n);// ensures in range of string
                 NSString *add =  [_flashed_word substringWithRange:NSMakeRange(k,1)];
                 NSString *helper=[NSString stringWithFormat:@"%@%@",start, add];
                 explanationField.text = helper;
@@ -450,8 +448,8 @@ static inline int skRand(int low, int high){
                 [explanationField sizeToFit];
                 
                 CGRect frame = explanationField.frame;
-                frame.origin.y= yPosition;//pass the cordinate which you want
-                frame.origin.x= xPosition;//pass the cordinate which you want
+                frame.origin.y= yPosition;// pass the cordinate which you want
+                frame.origin.x= xPosition;// pass the cordinate which you want
                 explanationField.frame = frame;
                 
                 
@@ -472,7 +470,7 @@ static inline int skRand(int low, int high){
     
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
@@ -484,7 +482,7 @@ static inline int skRand(int low, int high){
     return YES;
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 -(BOOL)textFieldDidEndEditing:(UITextField *)textField
@@ -496,7 +494,7 @@ static inline int skRand(int low, int high){
 
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -(BOOL)textFieldShouldClear:(UITextField *)textField
 {
@@ -508,7 +506,7 @@ static inline int skRand(int low, int high){
     
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -(BOOL)textFieldDidChange:(UITextField *)textField
 {
@@ -519,7 +517,7 @@ static inline int skRand(int low, int high){
     
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     
@@ -528,7 +526,7 @@ static inline int skRand(int low, int high){
     return YES;
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 

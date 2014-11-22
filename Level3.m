@@ -1,10 +1,10 @@
-//
-//  Level10.m
-//  HanYu4u
-//
-//  Created by Rachael Keller on 8/9/14.
-//  Copyright (c) 2014 Rachael Keller. All rights reserved.
-//
+// 
+//   Level10.m
+//   HanYu4u
+// 
+//   Created by Rachael Keller on 8/9/14.
+//   Copyright (c) 2014 Rachael Keller. All rights reserved.
+// 
 
 #import "Level3.h"
 #import "Dialog3.h"
@@ -55,7 +55,7 @@
 -(void)show_chinese_translation:(NSString*)chinese_character pinyin:(NSString*)pinyin english:(NSString*)english touch_loc:(CGPoint)touchLocationInView{
     
     for (UIView *subview in [self.view subviews]) {
-        // Only remove the subviews with tag not equal to 1
+        //  Only remove the subviews with tag not equal to 1
         if (subview.tag == 9) {
             [subview removeFromSuperview];
         }
@@ -68,10 +68,10 @@
     explanationField.backgroundColor=[UIColor blackColor];
     explanationField.alpha = 0.8;
     explanationField.numberOfLines = 3;
-    //string of explanation~~~~~~~~~~~
+    // string of explanation~~~~~~~~~~~
     
     NSString *explanation=[NSString stringWithFormat:@"%@\n%@\n%@\n",chinese_character,pinyin,english];
-    //~~~~~~~~~~~~~~~~~~~end explanation
+    // ~~~~~~~~~~~~~~~~~~~end explanation
     explanationField.text = explanation;
     CGPoint mid = CGPointMake( CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
     explanationField.adjustsFontSizeToFitWidth = true;
@@ -88,8 +88,8 @@
     [explanationField sizeToFit];
     
     CGRect frame = explanationField.frame;
-    frame.origin.y= yPosition;//pass the cordinate which you want
-    frame.origin.x= xPosition;//pass the cordinate which you want
+    frame.origin.y= yPosition;// pass the cordinate which you want
+    frame.origin.x= xPosition;// pass the cordinate which you want
     explanationField.frame= frame;
     
     
@@ -111,8 +111,8 @@
         
         
         
-        // Score
-        //~~~~~~~~~~~~~~~~~~~~~
+        //  Score
+        // ~~~~~~~~~~~~~~~~~~~~~
         _lblScore = [SKLabelNode labelNodeWithFontNamed:@"ChalkboardSE-Bold"];
         _lblScore.fontSize = 12;
         _lblScore.fontColor = [SKColor redColor];
@@ -121,7 +121,7 @@
         [_lblScore setText:[NSString stringWithFormat:@"%d", [GameState sharedInstance].score]];
         [self addChild:_lblScore];
         
-        //to be put next to score
+        // to be put next to score
         SKLabelNode *currency = [SKLabelNode labelNodeWithFontNamed:@"ChalkboardSE-Bold"];
         currency.fontSize = 12;
         currency.fontColor = [SKColor redColor];
@@ -131,7 +131,7 @@
         
         
         
-        //dialog controller~~~~~~~~~~~~
+        // dialog controller~~~~~~~~~~~~
         double padding = 0.2;
         
         
@@ -143,7 +143,7 @@
         _dialog_start10.fontSize = 12;
         _dialog_start10.fontColor = [SKColor colorWithRed:1 green:0.1 blue:0 alpha:1];
         _dialog_start10.position = CGPointMake(CGRectGetMinX(self.frame)+80, CGRectGetMinY(self.frame)+50);
-        _dialog_start10.zPosition = 1; //sets it on foreground
+        _dialog_start10.zPosition = 1; // sets it on foreground
         
         SKSpriteNode *button_dialog = [SKSpriteNode spriteNodeWithImageNamed:@"blue_button"];
         button_dialog.xScale = 0.7;
@@ -152,18 +152,18 @@
         
         [self addChild: _dialog_start10];
         [self addChild:button_dialog];
-        //~~~~~~~~~~~~~~~~dialog controller
+        // ~~~~~~~~~~~~~~~~dialog controller
         
         
         _change_page = [SKLabelNode  labelNodeWithFontNamed:@"EuphemiaUCAS-Bold"];
         _change_page.name = @"change_page";
         _change_page.fontSize = 8;
-        _change_page.text = @"下页"; //initial is next, at call to touch, change text to shangye
+        _change_page.text = @"下页"; // initial is next, at call to touch, change text to shangye
         
         _change_page.fontSize = 12;
         _change_page.fontColor = [SKColor colorWithRed:1 green:0.1 blue:0 alpha:1];
         _change_page.position = CGPointMake(CGRectGetMaxX(self.frame)-80, CGRectGetMinY(self.frame)+50);
-        _change_page.zPosition = 1; //sets it on foreground
+        _change_page.zPosition = 1; // sets it on foreground
         
         SKSpriteNode *button_page = [SKSpriteNode spriteNodeWithImageNamed:@"return"];
         button_page.xScale = 0.7;
@@ -173,12 +173,12 @@
         [self addChild: _change_page];
         [self addChild:button_page];
         
-        //previous_scene controller~~~~~~~~~~~~
+        // previous_scene controller~~~~~~~~~~~~
         _go_back = [SKLabelNode labelNodeWithFontNamed:@"EuphemiaUCAS-Bold"];
         _go_back.name = @"go_back";
         _go_back.fontSize = 12;
         _go_back.text = @"Go Back";
-        _go_back.zPosition = 1; //set on foreground
+        _go_back.zPosition = 1; // set on foreground
         _go_back.fontColor = [SKColor colorWithRed:1 green:0.1 blue:0 alpha:1];
         _go_back.position = CGPointMake(_dialog_start10.position.x, 0.5*(CGRectGetMinY(self.frame) + _dialog_start10.position.y ));
         SKSpriteNode *button_scene = [SKSpriteNode spriteNodeWithImageNamed:@"blue_button"];
@@ -188,11 +188,11 @@
         
         [self addChild: _go_back];
         [self addChild:button_scene];
-        //~~~~~~~~~~~~~~~~previous_page controller
+        // ~~~~~~~~~~~~~~~~previous_page controller
         
         
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        //Chinese Words~~~~~~~~~~~~~~~~~~~~~~~
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // Chinese Words~~~~~~~~~~~~~~~~~~~~~~~
         int max_buffer_c0 = 0;
         int max_buffer_c1 = 0;
         int max_buffer_c2 = 0;
@@ -328,7 +328,7 @@
         _sentence4d.fontColor = [SKColor colorWithRed:0 green:0.4 blue:1 alpha:1];
         
         
-        //NEXT PAGE~~
+        // NEXT PAGE~~
         _sentence5a = [SKLabelNode labelNodeWithFontNamed:@"EuphemiaUCAS-Bold"];
         _sentence5a.name = @"fiftysix";
         _sentence5a.text = @"五十六 56";
@@ -420,7 +420,7 @@
         _sentence8c.fontColor = [SKColor colorWithRed:0 green:1 blue:1 alpha:1];
         
         
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Chinese Words end
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Chinese Words end
         
         NSMutableString *string_pad0 = [[NSMutableString alloc]init];
         NSMutableString *string_pad1 = [[NSMutableString alloc]init];
@@ -443,7 +443,7 @@
         pad2.text = string_pad2;
         pad2.fontSize = 14;
         
-        //FIRST PAGE~~~ >>shangye<< 上页
+        // FIRST PAGE~~~ >>shangye<< 上页
         
         
         
@@ -464,7 +464,7 @@
         _sentence4b.position = CGPointMake(_sentence1b.position.x, _sentence4a.position.y);
         _sentence4c.position = CGPointMake(_sentence1c.position.x, _sentence4a.position.y);
         _sentence4d.position = CGPointMake(_sentence1d.position.x,_sentence4a.position.y);
-        //NEXT PAGE~~~
+        // NEXT PAGE~~~
         
         _sentence5a.position = CGPointMake(_sentence2a.position.x, _sentence2a.position.y);
         _sentence5b.position = CGPointMake(_sentence2b.position.x,_sentence5a.position.y);
@@ -484,7 +484,7 @@
         _sentence8c.position = CGPointMake(_sentence2d.position.x, _sentence8a.position.y);
         
         
-        //add nodes begin~~~~
+        // add nodes begin~~~~
         [self addChild:sentence0a];
         [self addChild:sentence0b];
         [self addChild:sentence0c];
@@ -517,7 +517,7 @@
         [self addChild:_sentence8b];
         [self addChild:_sentence8c];
         
-        //~~~~~~~~~~~end add nodes
+        // ~~~~~~~~~~~end add nodes
         
     }
     _sentence1a.hidden = false;
@@ -569,7 +569,7 @@
             if( [node.name isEqualToString:@"dialog_start10"]){
                 
                 for (UIView *subview in [self.view subviews]) {
-                    // Only remove the subviews with tag not equal to 7 <<not for new load
+                    //  Only remove the subviews with tag not equal to 7 <<not for new load
                     if (subview.tag == 9 || subview.tag == 7) {
                         [subview removeFromSuperview];
                     }
@@ -595,11 +595,10 @@
             
             if( [node.name isEqualToString:@"go_back"]){
                 
+                //  Remove subviews of current page.
                 for (UIView *subview in [self.view subviews]) {
-                    
-                    //if (subview.tag == 7 || subview.tag == 9) {
                     [subview removeFromSuperview];
-                    // }
+                    
                 }
                 
                 
@@ -612,7 +611,7 @@
             if( [node.name isEqualToString:@"change_page"]){
                 
                 for (UIView *subview in [self.view subviews]) {
-                    // Only remove the subviews with tag not equal to 1
+                    //  Only remove the subviews with tag not equal to 1
                     if (subview.tag == 9) {
                         [subview removeFromSuperview];
                     }
@@ -621,10 +620,10 @@
                
             }
             
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            //Word Explanations BEGIN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // Word Explanations BEGIN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             
             
             
@@ -635,10 +634,10 @@
             }
             
             
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            //Word Explanations END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // Word Explanations END~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             
             else{
                 for (UIView *subview in [self.view subviews]) {

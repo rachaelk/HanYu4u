@@ -1,14 +1,14 @@
-//
-//  SmallStore.h
-//  HanYu4u
-//
-//  Created by Rachael Keller on 7/26/14.
-//  Copyright (c) 2014 Rachael Keller. All rights reserved.
-//
+// 
+//   SmallStore.h
+//   HanYu4u
+// 
+//   Created by Rachael Keller on 7/26/14.
+//   Copyright (c) 2014 Rachael Keller. All rights reserved.
+// 
 
-//FILE: SMALLSTORE
-//PURPOSE:
-//    To have show the items in aisles, like a supermarket, for the user.
+// FILE: SmallStore
+// PURPOSE:
+//     To have show the items in aisles, like a supermarket, for the user.
 
 #import <SpriteKit/SpriteKit.h>
 #import "PMCustomKeyboard.h"

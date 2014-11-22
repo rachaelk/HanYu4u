@@ -1,13 +1,13 @@
-//
-//  MyScene.m
-//  HanYu4u
-//
-//  Created by Rachael Keller on 7/18/14.
-//  Copyright (c) 2014 Rachael Keller. All rights reserved.
-//
+// 
+//   MyScene.m
+//   HanYu4u
+// 
+//   Created by Rachael Keller on 7/18/14.
+//   Copyright (c) 2014 Rachael Keller. All rights reserved.
+// 
 
 #import "MyScene.h"
-//BASE SCENE in the program.
+// BASE SCENE in the program.
 
 
 @implementation MyScene
@@ -81,7 +81,7 @@
 
 
 
-//works:
+// works:
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     /* Called when a touch begins */
     for (UITouch *touch in touches) {
